@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f766e" />
+  <meta name="description" content="Herramienta PWA para contar corte de caja por cantidad de billetes y monedas." />
+
+  <title>Corte de Caja</title>
+
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./assets/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <main class="app-shell" id="app">
+    <section class="app-card">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">PWA</p>
+          <h1>Corte de caja</h1>
+        </div>
+        <span class="status-pill" id="statusPill">Paso 1 de 11</span>
+      </header>
+
+      <div class="progress" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <section id="screen" class="screen" aria-live="polite"></section>
+    </section>
+  </main>
+
+  <noscript>
+    <div class="noscript">
+      Esta herramienta necesita JavaScript habilitado para funcionar.
+    </div>
+  </noscript>
+
+  <script src="./app.js"></script>
+</body>
+</html>
