@@ -348,13 +348,14 @@ function renderSummary() {
       </div>
 
       <div class="summary-actions">
-        <button class="button whatsapp" type="button" id="whatsappButton">Enviar por WhatsApp</button>
+        <button class="button primary" type="button" id="shareButton">Compartir corte</button>
         <button class="button secondary" type="button" id="newCutButton">Nuevo corte</button>
+        <p class="share-status" id="shareStatus" role="status" aria-live="polite"></p>
       </div>
     </div>
   `;
 
-  screen.querySelector("#whatsappButton").addEventListener("click", shareToWhatsApp);
+  screen.querySelector("#shareButton").addEventListener("click", shareCut);
   screen.querySelector("#newCutButton").addEventListener("click", resetCut);
 }
 
@@ -398,10 +399,72 @@ function buildWhatsappMessage() {
   return lines.join("\n");
 }
 
-function shareToWhatsApp() {
+async function shareCut() {
   const message = buildWhatsappMessage();
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
-  window.location.href = whatsappUrl;
+  const status = document.querySelector("#shareStatus");
+  const shareButton = document.querySelector("#shareButton");
+
+  setShareStatus("");
+  shareButton.disabled = true;
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: "Corte de caja",
+        text: message
+      });
+
+      setShareStatus("Corte compartido.");
+      return;
+    }
+
+    await copyTextToClipboard(message);
+    setShareStatus("Texto copiado. Abre WhatsApp y pégalo.");
+  } catch (error) {
+    if (error && error.name === "AbortError") {
+      setShareStatus("");
+      return;
+    }
+
+    try {
+      await copyTextToClipboard(message);
+      setShareStatus("Texto copiado. Abre WhatsApp y pégalo.");
+    } catch (copyError) {
+      setShareStatus("No se pudo compartir ni copiar automáticamente.");
+    }
+  } finally {
+    shareButton.disabled = false;
+  }
+}
+
+async function copyTextToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textArea = document.createElement("textarea");
+  textArea.value = text;
+  textArea.setAttribute("readonly", "");
+  textArea.style.position = "fixed";
+  textArea.style.left = "-9999px";
+  textArea.style.top = "0";
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+
+  const copied = document.execCommand("copy");
+  document.body.removeChild(textArea);
+
+  if (!copied) {
+    throw new Error("Copy command failed");
+  }
+}
+
+function setShareStatus(message) {
+  const status = document.querySelector("#shareStatus");
+  if (!status) return;
+  status.textContent = message;
 }
 
 function resetCut() {

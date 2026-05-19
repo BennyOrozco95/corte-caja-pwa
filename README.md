@@ -36,7 +36,25 @@ Sube estos archivos a la raíz del repositorio y activa GitHub Pages desde `Sett
 Esta versión usa:
 
 ```js
-const CACHE_NAME = "corte-caja-pwa-v2";
+const CACHE_NAME = "corte-caja-pwa-v3";
 ```
 
 Si haces cambios y la app instalada no se actualiza, cambia a `v3`, `v4`, etc.
+
+
+## Compartir corte
+
+En el resumen final solo hay dos botones:
+
+```txt
+Compartir corte
+Nuevo corte
+```
+
+El botón `Compartir corte` usa el menú nativo de Android para que puedas elegir WhatsApp, WhatsApp Business u otra aplicación.
+
+Si el dispositivo o navegador no permite compartir directamente, la app copia el texto al portapapeles y muestra el aviso:
+
+```txt
+Texto copiado. Abre WhatsApp y pégalo.
+```

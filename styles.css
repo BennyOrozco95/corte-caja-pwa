@@ -449,6 +449,15 @@ h1 {
   gap: 7px;
 }
 
+.share-status {
+  min-height: 18px;
+  margin: 0;
+  color: var(--primary-dark);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-align: center;
+}
+
 .noscript {
   position: fixed;
   inset: 16px;
