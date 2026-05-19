@@ -1,4 +1,4 @@
-const CACHE_NAME = "corte-caja-pwa-v1";
+const CACHE_NAME = "corte-caja-pwa-v2";
 
 const APP_SHELL = [
   "./",
@@ -7,18 +7,7 @@ const APP_SHELL = [
   "./app.js",
   "./manifest.json",
   "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.png",
-  "./assets/img/dolar.png",
-  "./assets/img/500.png",
-  "./assets/img/200.png",
-  "./assets/img/100.png",
-  "./assets/img/50.png",
-  "./assets/img/20.png",
-  "./assets/img/10.png",
-  "./assets/img/5.png",
-  "./assets/img/2.png",
-  "./assets/img/1.png",
-  "./assets/img/050.png"
+  "./assets/icons/icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {

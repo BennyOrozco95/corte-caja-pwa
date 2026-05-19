@@ -2,112 +2,110 @@ const steps = [
   {
     id: "usd",
     group: "usd",
-    title: "Dólares",
-    prompt: "¿Cuántos dólares hay?",
-    helper: "Se mostrarán separados y no se sumarán al total en pesos.",
-    image: "./assets/img/dolar.png",
-    imageLabel: "Dólares",
+    kind: "usd",
+    typeLabel: "Dólares",
+    shortTitle: "Dólares",
+    displayValue: "USD",
     value: 0,
     unit: "USD"
   },
   {
+    id: "mxn-1000",
+    group: "bills",
+    kind: "bill",
+    typeLabel: "Billete",
+    shortTitle: "$1000",
+    displayValue: "$1000",
+    value: 1000
+  },
+  {
     id: "mxn-500",
     group: "bills",
-    title: "Billetes de $500",
-    prompt: "¿Cuántos billetes de $500 hay?",
-    helper: "Ingresa la cantidad de billetes, no el importe.",
-    image: "./assets/img/500.png",
-    imageLabel: "Billete de $500",
+    kind: "bill",
+    typeLabel: "Billete",
+    shortTitle: "$500",
+    displayValue: "$500",
     value: 500
   },
   {
     id: "mxn-200",
     group: "bills",
-    title: "Billetes de $200",
-    prompt: "¿Cuántos billetes de $200 hay?",
-    helper: "Ingresa la cantidad de billetes, no el importe.",
-    image: "./assets/img/200.png",
-    imageLabel: "Billete de $200",
+    kind: "bill",
+    typeLabel: "Billete",
+    shortTitle: "$200",
+    displayValue: "$200",
     value: 200
   },
   {
     id: "mxn-100",
     group: "bills",
-    title: "Billetes de $100",
-    prompt: "¿Cuántos billetes de $100 hay?",
-    helper: "Ingresa la cantidad de billetes, no el importe.",
-    image: "./assets/img/100.png",
-    imageLabel: "Billete de $100",
+    kind: "bill",
+    typeLabel: "Billete",
+    shortTitle: "$100",
+    displayValue: "$100",
     value: 100
   },
   {
     id: "mxn-50",
     group: "bills",
-    title: "Billetes de $50",
-    prompt: "¿Cuántos billetes de $50 hay?",
-    helper: "Ingresa la cantidad de billetes, no el importe.",
-    image: "./assets/img/50.png",
-    imageLabel: "Billete de $50",
+    kind: "bill",
+    typeLabel: "Billete",
+    shortTitle: "$50",
+    displayValue: "$50",
     value: 50
   },
   {
     id: "mxn-20",
     group: "bills",
-    title: "Billetes de $20",
-    prompt: "¿Cuántos billetes de $20 hay?",
-    helper: "Ingresa la cantidad de billetes, no el importe.",
-    image: "./assets/img/20.png",
-    imageLabel: "Billete de $20",
+    kind: "bill",
+    typeLabel: "Billete",
+    shortTitle: "$20",
+    displayValue: "$20",
     value: 20
   },
   {
     id: "mxn-10",
     group: "coins",
-    title: "Monedas de $10",
-    prompt: "¿Cuántas monedas de $10 hay?",
-    helper: "Ingresa la cantidad de monedas, no el importe.",
-    image: "./assets/img/10.png",
-    imageLabel: "Moneda de $10",
+    kind: "coin",
+    typeLabel: "Moneda",
+    shortTitle: "$10",
+    displayValue: "$10",
     value: 10
   },
   {
     id: "mxn-5",
     group: "coins",
-    title: "Monedas de $5",
-    prompt: "¿Cuántas monedas de $5 hay?",
-    helper: "Ingresa la cantidad de monedas, no el importe.",
-    image: "./assets/img/5.png",
-    imageLabel: "Moneda de $5",
+    kind: "coin",
+    typeLabel: "Moneda",
+    shortTitle: "$5",
+    displayValue: "$5",
     value: 5
   },
   {
     id: "mxn-2",
     group: "coins",
-    title: "Monedas de $2",
-    prompt: "¿Cuántas monedas de $2 hay?",
-    helper: "Ingresa la cantidad de monedas, no el importe.",
-    image: "./assets/img/2.png",
-    imageLabel: "Moneda de $2",
+    kind: "coin",
+    typeLabel: "Moneda",
+    shortTitle: "$2",
+    displayValue: "$2",
     value: 2
   },
   {
     id: "mxn-1",
     group: "coins",
-    title: "Monedas de $1",
-    prompt: "¿Cuántas monedas de $1 hay?",
-    helper: "Ingresa la cantidad de monedas, no el importe.",
-    image: "./assets/img/1.png",
-    imageLabel: "Moneda de $1",
+    kind: "coin",
+    typeLabel: "Moneda",
+    shortTitle: "$1",
+    displayValue: "$1",
     value: 1
   },
   {
     id: "mxn-050",
     group: "coins",
-    title: "Monedas de $0.50",
-    prompt: "¿Cuántas monedas de $0.50 hay?",
-    helper: "Ingresa la cantidad de monedas de cincuenta centavos.",
-    image: "./assets/img/050.png",
-    imageLabel: "Moneda de $0.50",
+    kind: "coin",
+    typeLabel: "Moneda",
+    shortTitle: "$0.50",
+    displayValue: "50¢",
     value: 0.5
   }
 ];
@@ -115,6 +113,7 @@ const steps = [
 const screen = document.querySelector("#screen");
 const statusPill = document.querySelector("#statusPill");
 const progressBar = document.querySelector("#progressBar");
+const mainTitle = document.querySelector("#mainTitle");
 
 const state = {
   currentStep: 0,
@@ -145,13 +144,15 @@ function getNumericEntry(stepId) {
 function setHeaderForStep() {
   const totalSteps = steps.length;
   const visualStep = Math.min(state.currentStep + 1, totalSteps);
-  statusPill.textContent = `Paso ${visualStep} de ${totalSteps}`;
+  statusPill.textContent = `${visualStep}/${totalSteps}`;
   progressBar.style.width = `${(visualStep / totalSteps) * 100}%`;
+  mainTitle.textContent = steps[state.currentStep].typeLabel;
 }
 
 function setHeaderForSummary() {
   statusPill.textContent = "Resumen";
   progressBar.style.width = "100%";
+  mainTitle.textContent = "Total";
 }
 
 function renderStep() {
@@ -159,33 +160,28 @@ function renderStep() {
 
   const step = steps[state.currentStep];
   const currentValue = state.entries[step.id];
+  const cardClass = `denomination-card ${step.kind}`;
 
   screen.innerHTML = `
     <div class="step-content">
-      <div class="question-block">
-        <h2>${step.prompt}</h2>
-        <p>${step.helper}</p>
+      <div class="quick-label">
+        <h2>${step.typeLabel}</h2>
+        <p>Cantidad, no importe</p>
       </div>
 
-      <div class="denomination-image-wrap">
-        <img
-          class="denomination-image"
-          src="${step.image}"
-          alt="${step.imageLabel}"
-          onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"
-        />
-        <div class="image-fallback" hidden>
-          <strong>Imagen pendiente</strong>
-          <span>${step.imageLabel}</span>
-        </div>
+      <div class="${cardClass}" aria-label="${step.typeLabel} ${step.shortTitle}">
+        <span class="denomination-type">${step.typeLabel}</span>
+        <strong class="denomination-value">${step.displayValue}</strong>
       </div>
 
       <div class="amount-panel">
-        <div class="amount-label">Cantidad</div>
+        <div class="amount-topline">
+          <span>Piezas</span>
+          <span class="subtotal-hint" id="subtotalHint">${getSubtotalHint(step)}</span>
+        </div>
         <div class="amount-display ${currentValue === "" ? "is-empty" : ""}" id="amountDisplay">
           ${currentValue === "" ? "0" : integerFormatter.format(Number(currentValue))}
         </div>
-        <p class="subtotal-hint" id="subtotalHint">${getSubtotalHint(step)}</p>
       </div>
 
       <div class="keypad" aria-label="Teclado numérico">
@@ -213,13 +209,11 @@ function getSubtotalHint(step) {
   const quantity = getNumericEntry(step.id);
 
   if (step.group === "usd") {
-    return quantity > 0
-      ? `Se registrarán ${integerFormatter.format(quantity)} USD separados del total en pesos.`
-      : "Si no hay dólares, puedes dejarlo en 0 y continuar.";
+    return `${integerFormatter.format(quantity)} USD`;
   }
 
   const subtotal = quantity * step.value;
-  return `${integerFormatter.format(quantity)} x ${formatPesos(step.value)} = ${formatPesos(subtotal)}`;
+  return formatPesos(subtotal).replace(" MXN", "");
 }
 
 function updateAmountDisplay() {
@@ -306,8 +300,8 @@ function buildSummaryRows(group) {
 
       return `
         <div class="summary-row">
-          <span>${step.title}: ${integerFormatter.format(quantity)}</span>
-          <strong>${formatPesos(subtotal)}</strong>
+          <span>${step.shortTitle} x ${integerFormatter.format(quantity)}</span>
+          <strong>${formatPesos(subtotal).replace(" MXN", "")}</strong>
         </div>
       `;
     })
@@ -320,20 +314,19 @@ function renderSummary() {
   const usdStep = steps.find((step) => step.group === "usd");
   const usdQuantity = getNumericEntry(usdStep.id);
   const totalPesos = calculatePesoTotal();
-  const dateText = getCurrentDateText();
 
   screen.innerHTML = `
     <div class="summary">
       <div class="summary-title">
-        <h2>Resumen del corte</h2>
-        <p>${dateText}</p>
+        <h2>Resumen</h2>
+        <p>${getCurrentDateText()}</p>
       </div>
 
       <div class="summary-card">
         <div class="summary-section">
           <h3>Dólares</h3>
           <div class="summary-row">
-            <span>Dólares registrados</span>
+            <span>USD</span>
             <strong>${integerFormatter.format(usdQuantity)} USD</strong>
           </div>
         </div>
@@ -384,7 +377,7 @@ function buildWhatsappMessage() {
     .forEach((step) => {
       const quantity = getNumericEntry(step.id);
       const subtotal = quantity * step.value;
-      lines.push(`${step.title.replace("Billetes de ", "")} x ${integerFormatter.format(quantity)} = ${formatPesos(subtotal)}`);
+      lines.push(`${step.shortTitle} x ${integerFormatter.format(quantity)} = ${formatPesos(subtotal)}`);
     });
 
   lines.push("");
@@ -395,7 +388,7 @@ function buildWhatsappMessage() {
     .forEach((step) => {
       const quantity = getNumericEntry(step.id);
       const subtotal = quantity * step.value;
-      lines.push(`${step.title.replace("Monedas de ", "")} x ${integerFormatter.format(quantity)} = ${formatPesos(subtotal)}`);
+      lines.push(`${step.shortTitle} x ${integerFormatter.format(quantity)} = ${formatPesos(subtotal)}`);
     });
 
   lines.push("");
